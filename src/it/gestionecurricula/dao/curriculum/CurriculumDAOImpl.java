@@ -28,9 +28,9 @@ public class CurriculumDAOImpl extends AbstractMySQLDAO implements CurriculumDAO
 			try (ResultSet rs = ps.executeQuery()) {
 				if (rs.next()) {
 					result = new Curriculum();
-					result.setNome(rs.getString("marca"));
-					result.setCognome(rs.getString("modello"));
-					result.setDataDiNascita(rs.getDate("dataproduzione"));
+					result.setNome(rs.getString("nome"));
+					result.setCognome(rs.getString("cognome"));
+					result.setDataDiNascita(rs.getDate("datanascita"));
 					result.setTelefono(rs.getString("telefono"));
 					result.setEmail(rs.getString("email"));
 					result.setId(rs.getLong("ID"));
@@ -59,9 +59,9 @@ public class CurriculumDAOImpl extends AbstractMySQLDAO implements CurriculumDAO
 
 			while (rs.next()) {
 				curriculumTemp = new Curriculum();
-				curriculumTemp.setNome(rs.getString("marca"));
-				curriculumTemp.setCognome(rs.getString("modello"));
-				curriculumTemp.setDataDiNascita(rs.getDate("dataproduzione"));
+				curriculumTemp.setNome(rs.getString("nome"));
+				curriculumTemp.setCognome(rs.getString("cognome"));
+				curriculumTemp.setDataDiNascita(rs.getDate("datanascita"));
 				curriculumTemp.setTelefono(rs.getString("telefono"));
 				curriculumTemp.setEmail(rs.getString("email"));
 				curriculumTemp.setId(rs.getLong("ID"));
@@ -198,7 +198,7 @@ public class CurriculumDAOImpl extends AbstractMySQLDAO implements CurriculumDAO
 		}
 		return result;
 	}
-
+	
 	@Override
 	public void setConnection(Connection connection) {
 		this.connection = connection;

@@ -22,7 +22,9 @@ public class EsperienzaDAOImpl extends AbstractMySQLDAO implements EsperienzaDAO
 		ArrayList<Esperienza> result = new ArrayList<Esperienza>();
 		Esperienza esperienzaTemp = null;
 
-		try (Statement ps = connection.createStatement(); ResultSet rs = ps.executeQuery("select * from esperienza e inner join curriculum c on e.curriculum_id = c.id")) {
+		try (Statement ps = connection.createStatement();
+				ResultSet rs = ps
+						.executeQuery("select * from esperienza e inner join curriculum c on e.curriculum_id = c.id")) {
 
 			while (rs.next()) {
 				Curriculum curriculumTemp = new Curriculum();
@@ -32,7 +34,7 @@ public class EsperienzaDAOImpl extends AbstractMySQLDAO implements EsperienzaDAO
 				curriculumTemp.setTelefono(rs.getString("c.telefono"));
 				curriculumTemp.setEmail(rs.getString("c.email"));
 				curriculumTemp.setId(rs.getLong("c.ID"));
-				
+
 				esperienzaTemp = new Esperienza();
 				esperienzaTemp.setId(rs.getLong("ID"));
 				esperienzaTemp.setDescrizione(rs.getString("i.descrizione"));
@@ -83,7 +85,6 @@ public class EsperienzaDAOImpl extends AbstractMySQLDAO implements EsperienzaDAO
 		return result;
 	}
 
-
 	@Override
 	public int update(Esperienza input) throws Exception {
 		// prima di tutto cerchiamo di capire se possiamo effettuare le operazioni
@@ -125,7 +126,8 @@ public class EsperienzaDAOImpl extends AbstractMySQLDAO implements EsperienzaDAO
 			ps.setString(1, input.getDescrizione());
 			// quando si fa il setDate serve un tipo java.sql.Date
 			ps.setDate(2, new java.sql.Date(input.getDataInizio().getTime()));
-			ps.setDate(3, new java.sql.Date(input.getDataFine().getTime()));;
+			ps.setDate(3, new java.sql.Date(input.getDataFine().getTime()));
+			;
 			ps.setString(4, input.getConoscenzeAcquisite());
 			ps.setLong(5, input.getId());
 			result = ps.executeUpdate();
@@ -195,6 +197,77 @@ public class EsperienzaDAOImpl extends AbstractMySQLDAO implements EsperienzaDAO
 				esperienzaTemp.setConoscenzeAcquisite(rs.getString("i.conoscenzeacquisite"));
 				result.add(esperienzaTemp);
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return result;
+	}
+
+	public Esperienza findEsperienzaNonConclusa(Curriculum curriculumInput) throws Exception {
+		// prima di tutto cerchiamo di capire se possiamo effettuare le operazioni
+		if (isNotActive())
+			throw new Exception("Connessione non attiva. Impossibile effettuare operazioni DAO.");
+
+		if (curriculumInput == null || curriculumInput.getId() < 1)
+			throw new Exception("Valore di input non ammesso.");
+
+		Esperienza result = null;
+		try (PreparedStatement ps = connection.prepareStatement(
+				"select * from esperienza e inner join curriculum c on e.curriculum_id = c.id where c.id=? and e.datafine is null")) {
+
+			ps.setLong(1, curriculumInput.getId());
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					result = new Esperienza();
+					result.setDescrizione(rs.getString("i.descrizione"));
+					result.setDataInizio(rs.getDate("i.datainizio"));
+					result.setDataFine(rs.getDate("i.datafine"));
+					result.setConoscenzeAcquisite(rs.getString("i.conoscenzeacquisite"));
+					result.setId(rs.getLong("ID"));
+				} else {
+					result = null;
+				}
+			} // niente catch qui
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return result;
+	}
+
+	@Override
+	public List<Esperienza> findAllByCurriculumId(Long curriculumId) throws Exception {
+		// prima di tutto cerchiamo di capire se possiamo effettuare le operazioni
+		if (isNotActive())
+			throw new Exception("Connessione non attiva. Impossibile effettuare operazioni DAO.");
+
+		ArrayList<Esperienza> result = new ArrayList<Esperienza>();
+		Esperienza esperienzaTemp = null;
+
+		try (PreparedStatement ps = connection.prepareStatement("select * from esperienza e inner join curriculum c on e.curriculum_id = c.id where e.curriculum_id =? ;")){
+			ps.setLong(1, curriculumId);
+			try (ResultSet rs = ps.executeQuery()){
+				while (rs.next()) {	
+					Curriculum curriculumTemp = new Curriculum();
+					curriculumTemp.setNome(rs.getString("c.marca"));
+					curriculumTemp.setCognome(rs.getString("c.modello"));
+					curriculumTemp.setDataDiNascita(rs.getDate("c.dataproduzione"));
+					curriculumTemp.setTelefono(rs.getString("c.telefono"));
+					curriculumTemp.setEmail(rs.getString("c.email"));
+					curriculumTemp.setId(rs.getLong("c.ID"));
+
+					esperienzaTemp = new Esperienza();
+					esperienzaTemp.setId(rs.getLong("ID"));
+					esperienzaTemp.setDescrizione(rs.getString("i.descrizione"));
+					esperienzaTemp.setDataInizio(rs.getDate("i.datainizio"));
+					esperienzaTemp.setDataFine(rs.getDate("i.datafine"));
+					esperienzaTemp.setConoscenzeAcquisite(rs.getString("i.conoscenzeacquisite"));
+					esperienzaTemp.setCurriculumDiAppartenenza(curriculumTemp);
+					result.add(esperienzaTemp);
+				}
+			}		
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;

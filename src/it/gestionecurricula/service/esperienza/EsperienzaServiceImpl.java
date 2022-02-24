@@ -89,7 +89,16 @@ public class EsperienzaServiceImpl implements EsperienzaService {
 
 			// inietto la connection nel dao
 			esperienzaDao.setConnection(connection);
-
+			
+			Esperienza esperienzaDaChiudere = esperienzaDao.findEsperienzaNonConclusa(input.getCurriculumDiAppartenenza());
+			if(esperienzaDaChiudere != null) {
+				esperienzaDaChiudere.setDataFine(input.getDataInizio());
+			}
+			for(Esperienza esperienzaItem : esperienzaDao.findAllByCurriculumId(input.getCurriculumDiAppartenenza().getId())){
+				if(input.getDataInizio().before(esperienzaItem.getDataFine()) || input.getDataFine().after(esperienzaItem.getDataInizio())){
+					throw new RuntimeException("Impossibile inserire esperienza, hai delle date che si sovrappongono");
+				}
+			}
 			// eseguo quello che realmente devo fare
 			result = esperienzaDao.insert(input);
 

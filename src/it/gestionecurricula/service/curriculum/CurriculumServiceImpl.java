@@ -7,14 +7,20 @@ import java.util.List;
 import it.gestionecurricula.connection.MyConnection;
 import it.gestionecurricula.dao.Constants;
 import it.gestionecurricula.dao.curriculum.CurriculumDAO;
+import it.gestionecurricula.dao.esperienza.EsperienzaDAO;
 import it.gestionecurricula.model.Curriculum;
 
 public class CurriculumServiceImpl implements CurriculumService{
 
 	private CurriculumDAO curriculumDao;
+	private EsperienzaDAO esperienzaDao;
 	@Override
 	public void setCurriculumDao(CurriculumDAO curriculumDao) {
 		this.curriculumDao = curriculumDao;	
+	}
+	
+	public void setEsperienzaDao(EsperienzaDAO esperienzaDao) {
+		this.esperienzaDao = esperienzaDao;
 	}
 
 	@Override
@@ -110,6 +116,9 @@ public class CurriculumServiceImpl implements CurriculumService{
 			curriculumDao.setConnection(connection);
 
 			// eseguo quello che realmente devo fare
+			if(esperienzaDao.findAllByCurriculumId(input.getId()) != null) {
+				throw new RuntimeException("IMpossibile rimuovere curriculum: sono presenti delle esperienze");
+			}
 			result = curriculumDao.delete(input);
 
 		} catch (Exception e) {
