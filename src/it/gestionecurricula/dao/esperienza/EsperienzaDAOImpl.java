@@ -4,43 +4,42 @@ import java.sql.Connection;
 import java.util.List;
 
 import it.gestionecurricula.dao.AbstractMySQLDAO;
-import it.gestionecurricula.dao.curriculum.CurriculumDAO;
-import it.gestionecurricula.model.Curriculum;
+import it.gestionecurricula.model.Esperienza;
 
-public class EsperienzaDAOImpl extends AbstractMySQLDAO implements CurriculumDAO{
+public class EsperienzaDAOImpl extends AbstractMySQLDAO implements EsperienzaDAO{
 
 	@Override
-	public List<Curriculum> list() throws Exception {
+	public List<Esperienza> list() throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Curriculum get(Long idInput) throws Exception {
+	public Esperienza get(Long idInput) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public int update(Curriculum input) throws Exception {
+	public int update(Esperienza input) throws Exception {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public int insert(Curriculum input) throws Exception {
+	public int insert(Esperienza input) throws Exception {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public int delete(Curriculum input) throws Exception {
+	public int delete(Esperienza input) throws Exception {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public List<Curriculum> findByExample(Curriculum input) throws Exception {
+	public List<Esperienza> findByExample(Esperienza input) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
