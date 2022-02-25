@@ -127,9 +127,8 @@ public class EsperienzaDAOImpl extends AbstractMySQLDAO implements EsperienzaDAO
 			// quando si fa il setDate serve un tipo java.sql.Date
 			ps.setDate(2, new java.sql.Date(input.getDataInizio().getTime()));
 			ps.setDate(3, new java.sql.Date(input.getDataFine().getTime()));
-			;
 			ps.setString(4, input.getConoscenzeAcquisite());
-			ps.setLong(5, input.getId());
+			ps.setLong(5, input.getCurriculumDiAppartenenza().getId());
 			result = ps.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -246,10 +245,11 @@ public class EsperienzaDAOImpl extends AbstractMySQLDAO implements EsperienzaDAO
 		ArrayList<Esperienza> result = new ArrayList<Esperienza>();
 		Esperienza esperienzaTemp = null;
 
-		try (PreparedStatement ps = connection.prepareStatement("select * from esperienza e inner join curriculum c on e.curriculum_id = c.id where e.curriculum_id =? ;")){
+		try (PreparedStatement ps = connection.prepareStatement(
+				"select * from esperienza e inner join curriculum c on e.curriculum_id = c.id where e.curriculum_id =? ;")) {
 			ps.setLong(1, curriculumId);
-			try (ResultSet rs = ps.executeQuery()){
-				while (rs.next()) {	
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
 					Curriculum curriculumTemp = new Curriculum();
 					curriculumTemp.setNome(rs.getString("c.marca"));
 					curriculumTemp.setCognome(rs.getString("c.modello"));
@@ -267,7 +267,7 @@ public class EsperienzaDAOImpl extends AbstractMySQLDAO implements EsperienzaDAO
 					esperienzaTemp.setCurriculumDiAppartenenza(curriculumTemp);
 					result.add(esperienzaTemp);
 				}
-			}		
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;

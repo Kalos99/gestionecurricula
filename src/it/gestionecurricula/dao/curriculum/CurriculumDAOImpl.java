@@ -30,7 +30,7 @@ public class CurriculumDAOImpl extends AbstractMySQLDAO implements CurriculumDAO
 					result = new Curriculum();
 					result.setNome(rs.getString("nome"));
 					result.setCognome(rs.getString("cognome"));
-					result.setDataDiNascita(rs.getDate("datanascita"));
+					result.setDataDiNascita(rs.getDate("datadinascita"));
 					result.setTelefono(rs.getString("telefono"));
 					result.setEmail(rs.getString("email"));
 					result.setId(rs.getLong("ID"));
@@ -61,7 +61,7 @@ public class CurriculumDAOImpl extends AbstractMySQLDAO implements CurriculumDAO
 				curriculumTemp = new Curriculum();
 				curriculumTemp.setNome(rs.getString("nome"));
 				curriculumTemp.setCognome(rs.getString("cognome"));
-				curriculumTemp.setDataDiNascita(rs.getDate("datanascita"));
+				curriculumTemp.setDataDiNascita(rs.getDate("datadinascita"));
 				curriculumTemp.setTelefono(rs.getString("telefono"));
 				curriculumTemp.setEmail(rs.getString("email"));
 				curriculumTemp.setId(rs.getLong("ID"));
@@ -86,7 +86,7 @@ public class CurriculumDAOImpl extends AbstractMySQLDAO implements CurriculumDAO
 
 		int result = 0;
 		try (PreparedStatement ps = connection
-				.prepareStatement("UPDATE curriculum SET nome=?, cognome=?, datanascita=?, telefono=?, email=? where id=?;")) {
+				.prepareStatement("UPDATE curriculum SET nome=?, cognome=?, datadinascita=?, telefono=?, email=? where id=?;")) {
 			ps.setString(1, input.getNome());
 			ps.setString(2, input.getCognome());
 			// quando si fa il setDate serve un tipo java.sql.Date
@@ -113,13 +113,13 @@ public class CurriculumDAOImpl extends AbstractMySQLDAO implements CurriculumDAO
 
 		int result = 0;
 		try (PreparedStatement ps = connection
-				.prepareStatement("INSERT INTO curriculum (nome, cognome, datanascita, telefono, email) VALUES (?, ?, ?, ?, ?);")) {
+				.prepareStatement("INSERT INTO curriculum (nome, cognome, datadinascita, telefono, email) VALUES (?, ?, ?, ?, ?);")) {
 			ps.setString(1, input.getNome());
 			ps.setString(2, input.getCognome());
 			// quando si fa il setDate serve un tipo java.sql.Date
 			ps.setDate(3, new java.sql.Date(input.getDataDiNascita().getTime()));
-			ps.setString(1, input.getTelefono());
-			ps.setString(2, input.getEmail());
+			ps.setString(4, input.getTelefono());
+			ps.setString(5, input.getEmail());
 			result = ps.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -186,7 +186,7 @@ public class CurriculumDAOImpl extends AbstractMySQLDAO implements CurriculumDAO
 				curriculumTemp = new Curriculum();
 				curriculumTemp.setNome(rs.getString("nome"));
 				curriculumTemp.setCognome(rs.getString("cognome"));
-				curriculumTemp.setDataDiNascita(rs.getDate("datanascita"));
+				curriculumTemp.setDataDiNascita(rs.getDate("datadinascita"));
 				curriculumTemp.setTelefono(rs.getString("telefono"));
 				curriculumTemp.setEmail(rs.getString("email"));
 				curriculumTemp.setId(rs.getLong("ID"));
