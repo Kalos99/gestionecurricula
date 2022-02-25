@@ -70,11 +70,11 @@ public class TestGestioneCurricula {
 		if (esperienzaService.inserisciNuovo(newEsperienzaInstance1) != 1)
 			throw new RuntimeException("testInserimentoNuovoCurriculum FAILED ");
 		
-		Date dataInizio2 = new SimpleDateFormat("dd-MM-yyyy").parse("19-04-2022");
-		Date dataFine2 = new SimpleDateFormat("dd-MM-yyyy").parse("12-05-2022");
-		Esperienza newEsperienzaInstance2 = new Esperienza("Esperienza futura", dataInizio2, dataFine2, "Conoscenze future", ultimoCaricato);
-		if (esperienzaService.inserisciNuovo(newEsperienzaInstance2) != 1)
-			throw new RuntimeException("testInserimentoNuovoCurriculum FAILED ");
+//		Date dataInizio2 = new SimpleDateFormat("dd-MM-yyyy").parse("19-04-2022");
+//		Date dataFine2 = new SimpleDateFormat("dd-MM-yyyy").parse("12-05-2022");
+//		Esperienza newEsperienzaInstance2 = new Esperienza("Esperienza futura", dataInizio2, dataFine2, "Conoscenze future", ultimoCaricato);
+//		if (esperienzaService.inserisciNuovo(newEsperienzaInstance2) != 1)
+//			throw new RuntimeException("testInserimentoNuovoCurriculum FAILED ");
 		
 
 		System.out.println(".......testInserimentoNuovaEsperienza PASSED.............");
@@ -86,7 +86,7 @@ public class TestGestioneCurricula {
 		System.out.println("");
 		Date dataNascita1 = new SimpleDateFormat("dd-MM-yyyy").parse("18-11-1999");
 		Curriculum newCurriculumInstance = new Curriculum("Francesco", "Carmone", dataNascita1, "francescocarmone1999@gmail.com", "3205767599");
-		if (curriculumService.rimuovi(newCurriculumInstance) != 1)
+		if (curriculumService.inserisciNuovo(newCurriculumInstance) != 1)
 			throw new RuntimeException("testRimozioneCurriculum FAILED ");
 		
 		List<Curriculum> curriculumPresenti = curriculumService.listAll();

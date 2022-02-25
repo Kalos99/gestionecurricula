@@ -28,19 +28,19 @@ public class EsperienzaDAOImpl extends AbstractMySQLDAO implements EsperienzaDAO
 
 			while (rs.next()) {
 				Curriculum curriculumTemp = new Curriculum();
-				curriculumTemp.setNome(rs.getString("c.marca"));
-				curriculumTemp.setCognome(rs.getString("c.modello"));
-				curriculumTemp.setDataDiNascita(rs.getDate("c.dataproduzione"));
+				curriculumTemp.setNome(rs.getString("c.nome"));
+				curriculumTemp.setCognome(rs.getString("c.cognome"));
+				curriculumTemp.setDataDiNascita(rs.getDate("c.datadinascita"));
 				curriculumTemp.setTelefono(rs.getString("c.telefono"));
 				curriculumTemp.setEmail(rs.getString("c.email"));
 				curriculumTemp.setId(rs.getLong("c.ID"));
 
 				esperienzaTemp = new Esperienza();
 				esperienzaTemp.setId(rs.getLong("ID"));
-				esperienzaTemp.setDescrizione(rs.getString("i.descrizione"));
-				esperienzaTemp.setDataInizio(rs.getDate("i.datainizio"));
-				esperienzaTemp.setDataFine(rs.getDate("i.datafine"));
-				esperienzaTemp.setConoscenzeAcquisite(rs.getString("i.conoscenzeacquisite"));
+				esperienzaTemp.setDescrizione(rs.getString("e.descrizione"));
+				esperienzaTemp.setDataInizio(rs.getDate("e.datainizio"));
+				esperienzaTemp.setDataFine(rs.getDate("e.datafine"));
+				esperienzaTemp.setConoscenzeAcquisite(rs.getString("e.conoscenzeacquisite"));
 				esperienzaTemp.setCurriculumDiAppartenenza(curriculumTemp);
 				result.add(esperienzaTemp);
 			}
@@ -68,10 +68,10 @@ public class EsperienzaDAOImpl extends AbstractMySQLDAO implements EsperienzaDAO
 			try (ResultSet rs = ps.executeQuery()) {
 				if (rs.next()) {
 					result = new Esperienza();
-					result.setDescrizione(rs.getString("i.descrizione"));
-					result.setDataInizio(rs.getDate("i.datainizio"));
-					result.setDataFine(rs.getDate("i.datafine"));
-					result.setConoscenzeAcquisite(rs.getString("i.conoscenzeacquisite"));
+					result.setDescrizione(rs.getString("descrizione"));
+					result.setDataInizio(rs.getDate("datainizio"));
+					result.setDataFine(rs.getDate("datafine"));
+					result.setConoscenzeAcquisite(rs.getString("conoscenzeacquisite"));
 					result.setId(rs.getLong("ID"));
 				} else {
 					result = null;
@@ -190,10 +190,10 @@ public class EsperienzaDAOImpl extends AbstractMySQLDAO implements EsperienzaDAO
 			while (rs.next()) {
 				esperienzaTemp = new Esperienza();
 				esperienzaTemp.setId(rs.getLong("ID"));
-				esperienzaTemp.setDescrizione(rs.getString("i.descrizione"));
-				esperienzaTemp.setDataInizio(rs.getDate("i.datainizio"));
-				esperienzaTemp.setDataFine(rs.getDate("i.datafine"));
-				esperienzaTemp.setConoscenzeAcquisite(rs.getString("i.conoscenzeacquisite"));
+				esperienzaTemp.setDescrizione(rs.getString("descrizione"));
+				esperienzaTemp.setDataInizio(rs.getDate("datainizio"));
+				esperienzaTemp.setDataFine(rs.getDate("datafine"));
+				esperienzaTemp.setConoscenzeAcquisite(rs.getString("conoscenzeacquisite"));
 				result.add(esperienzaTemp);
 			}
 		} catch (Exception e) {
@@ -219,10 +219,10 @@ public class EsperienzaDAOImpl extends AbstractMySQLDAO implements EsperienzaDAO
 			try (ResultSet rs = ps.executeQuery()) {
 				if (rs.next()) {
 					result = new Esperienza();
-					result.setDescrizione(rs.getString("i.descrizione"));
-					result.setDataInizio(rs.getDate("i.datainizio"));
-					result.setDataFine(rs.getDate("i.datafine"));
-					result.setConoscenzeAcquisite(rs.getString("i.conoscenzeacquisite"));
+					result.setDescrizione(rs.getString("e.descrizione"));
+					result.setDataInizio(rs.getDate("e.datainizio"));
+					result.setDataFine(rs.getDate("e.datafine"));
+					result.setConoscenzeAcquisite(rs.getString("e.conoscenzeacquisite"));
 					result.setId(rs.getLong("ID"));
 				} else {
 					result = null;
@@ -251,21 +251,44 @@ public class EsperienzaDAOImpl extends AbstractMySQLDAO implements EsperienzaDAO
 			try (ResultSet rs = ps.executeQuery()) {
 				while (rs.next()) {
 					Curriculum curriculumTemp = new Curriculum();
-					curriculumTemp.setNome(rs.getString("c.marca"));
-					curriculumTemp.setCognome(rs.getString("c.modello"));
-					curriculumTemp.setDataDiNascita(rs.getDate("c.dataproduzione"));
+					curriculumTemp.setNome(rs.getString("c.nome"));
+					curriculumTemp.setCognome(rs.getString("c.cognome"));
+					curriculumTemp.setDataDiNascita(rs.getDate("c.datadinascita"));
 					curriculumTemp.setTelefono(rs.getString("c.telefono"));
 					curriculumTemp.setEmail(rs.getString("c.email"));
 					curriculumTemp.setId(rs.getLong("c.ID"));
 
 					esperienzaTemp = new Esperienza();
 					esperienzaTemp.setId(rs.getLong("ID"));
-					esperienzaTemp.setDescrizione(rs.getString("i.descrizione"));
-					esperienzaTemp.setDataInizio(rs.getDate("i.datainizio"));
-					esperienzaTemp.setDataFine(rs.getDate("i.datafine"));
-					esperienzaTemp.setConoscenzeAcquisite(rs.getString("i.conoscenzeacquisite"));
+					esperienzaTemp.setDescrizione(rs.getString("e.descrizione"));
+					esperienzaTemp.setDataInizio(rs.getDate("e.datainizio"));
+					esperienzaTemp.setDataFine(rs.getDate("e.datafine"));
+					esperienzaTemp.setConoscenzeAcquisite(rs.getString("e.conoscenzeacquisite"));
 					esperienzaTemp.setCurriculumDiAppartenenza(curriculumTemp);
 					result.add(esperienzaTemp);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return result;
+	}
+	
+	@Override
+	public int countAllByCurriculumId(Long curriculumId) throws Exception {
+		// prima di tutto cerchiamo di capire se possiamo effettuare le operazioni
+		if (isNotActive())
+			throw new Exception("Connessione non attiva. Impossibile effettuare operazioni DAO.");
+
+		int result = 0;
+
+		try (PreparedStatement ps = connection.prepareStatement(
+				"select count(e.id) as totale from esperienza e inner join curriculum c on e.curriculum_id = c.id where e.curriculum_id =? group by curriculum_id;")) {
+			ps.setLong(1, curriculumId);
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					result=rs.getInt("totale");
 				}
 			}
 		} catch (Exception e) {

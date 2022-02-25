@@ -116,8 +116,8 @@ public class CurriculumServiceImpl implements CurriculumService{
 			curriculumDao.setConnection(connection);
 
 			// eseguo quello che realmente devo fare
-			if(esperienzaDao.findAllByCurriculumId(input.getId()) != null) {
-				throw new RuntimeException("IMpossibile rimuovere curriculum: sono presenti delle esperienze");
+			if(esperienzaDao.countAllByCurriculumId(input.getId()) != 0) {
+				throw new RuntimeException("Impossibile rimuovere curriculum: sono presenti delle esperienze");
 			}
 			result = curriculumDao.delete(input);
 
